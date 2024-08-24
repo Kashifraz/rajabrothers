@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,3 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('/login', [AuthenticatedSessionController::class, 'loginThroughApp']);
+
+Route::get('/categories', [CategoryController::class, 'getCategories']);
+Route::get('/category/{categoryId}/products', [ProductController::class, 'getProductsByCategory']);
+Route::get('/products/search', [ProductController::class, 'searchProductsByName']);

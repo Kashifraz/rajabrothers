@@ -134,4 +134,70 @@ class ProductController extends Controller
         $product->delete();
         return redirect()->back()->with('success', 'Product deleted successfully.');
     }
+
+    // fetch product api implementation
+    public function getProductsByCategory(Request $request, $categoryId)
+    {
+        // Default pagination values
+        $limit = $request->input('limit', 10); // Default to 10 products
+        $offset = $request->input('offset', 0); // Default to starting at the first product
+
+        // Fetch products for the given category with pagination
+        $products = Product::where('category_id', $categoryId)
+                            ->skip($offset)
+                            ->take($limit)
+                            ->get();
+
+        // Total products in this category
+        $totalProducts = Product::where('category_id', $categoryId)->count();
+
+        // Check if there are more products to load
+        $hasMore = $offset + $limit < $totalProducts;
+
+        // Append full URL for the product image
+        $products->transform(function ($product) {
+            $product->image = url('images/' . $product->image);
+            return $product;
+        });
+
+        return response()->json([
+            'success' => true,
+            'products' => $products,
+            'has_more' => $hasMore,
+        ], 200);
+    } 
+
+    //search product api implementation
+    public function searchProductsByName(Request $request)
+    {
+        $searchQuery = $request->input('query', '');
+
+        // Default pagination values
+        $limit = $request->input('limit', 10); // Default to 10 products
+        $offset = $request->input('offset', 0); // Default to starting at the first result
+
+        // Fetch products that match the search query, with pagination
+        $products = Product::where('name', 'like', '%' . $searchQuery . '%')
+                            ->skip($offset)
+                            ->take($limit)
+                            ->get();
+
+        // Total number of products that match the search query
+        $totalProducts = Product::where('name', 'like', '%' . $searchQuery . '%')->count();
+
+        // Check if there are more products to load
+        $hasMore = $offset + $limit < $totalProducts;
+
+        // Append full URL for the product image
+        $products->transform(function ($product) {
+            $product->image = url('images/' . $product->image);
+            return $product;
+        });
+
+        return response()->json([
+            'success' => true,
+            'products' => $products,
+            'has_more' => $hasMore,
+        ], 200);
+    }
 }

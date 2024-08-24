@@ -107,4 +107,31 @@ class CategoryController extends Controller
         $category->delete();
         return redirect()->back()->with('success', 'Category deleted successfully.');
     }
+
+    // get API for fetching all categories 
+    public function getCategories(Request $request)
+    {
+        // Default values for pagination
+        $limit = $request->input('limit', 10); // Default to 10 categories
+        $offset = $request->input('offset', 0); // Default to starting at the first record
+
+        // Fetch categories with pagination
+        $categories = Category::skip($offset)->take($limit)->get();
+
+        // Check if there are more categories to load
+        $totalCategories = Category::count();
+        $hasMore = $offset + $limit < $totalCategories;
+
+         // Append full URL for the product image
+         $categories->transform(function ($categories) {
+            $categories->image = url('images/' . $categories->image);
+            return $categories;
+        });
+
+        return response()->json([
+            'success' => true,
+            'categories' => $categories,
+            'has_more' => $hasMore,
+        ], 200);
+    }
 }
