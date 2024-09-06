@@ -190,7 +190,7 @@ class ProductController extends Controller
             ], 404);
         }
     }
-
+    //cd
     //search product api implementation
     public function searchProductsByName(Request $request)
     {
