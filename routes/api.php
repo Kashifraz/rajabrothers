@@ -26,3 +26,5 @@ Route::post('/login', [AuthenticatedSessionController::class, 'loginThroughApp']
 Route::get('/categories', [CategoryController::class, 'getCategories']);
 Route::get('/category/{categoryId}/products', [ProductController::class, 'getProductsByCategory']);
 Route::get('/products/search', [ProductController::class, 'searchProductsByName']);
+// Route::get('/products/barcode', [ProductController::class, 'getProductsByBarcodeId']);
+Route::get('product/barcode/{barcode_id}', [ProductController::class, 'getProductByBarcode']);

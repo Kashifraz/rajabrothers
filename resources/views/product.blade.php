@@ -138,6 +138,10 @@
                     @csrf
 
                     <div>
+                        <x-input-label for="id" value="Product ID" />
+                        <x-text-input id="id" name="id" type="text" class="mt-1 block w-full" placeholder="Product ID" />
+                    </div>
+                    <div>
                         <x-input-label for="name" value="Product Name" />
                         <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" placeholder="Product name" />
                     </div>

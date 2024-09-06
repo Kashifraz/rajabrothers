@@ -45,6 +45,7 @@ class ProductController extends Controller
     {
 
         $validated = $request->validate([
+            'id' => 'required',
             'name' => 'required|min:3|max:50',
             'category_id' => 'required',
             'description' => 'required|min:10|max:500',
@@ -59,6 +60,7 @@ class ProductController extends Controller
             $imageName = time() . '.' . $request->image->extension();
             $request->image->move(public_path('images'), $imageName);
             Product::create([
+                'barcode_id' => $request->id,
                 'name' => $request->name,
                 'category_id' => $request->category_id,
                 'description' => $request->description,
@@ -166,6 +168,28 @@ class ProductController extends Controller
             'has_more' => $hasMore,
         ], 200);
     } 
+
+    public function getProductByBarcode($barcode_id)
+    {
+        // Search for the product by barcode_id
+        $product = Product::where('barcode_id', $barcode_id)->first();
+
+        // Check if product is found
+        if ($product) {
+            // Modify the image attribute to include the full URL
+            $product->image = url('images/' . $product->image);
+
+            return response()->json([
+                'status' => 'success',
+                'product' => $product
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Product not found'
+            ], 404);
+        }
+    }
 
     //search product api implementation
     public function searchProductsByName(Request $request)
