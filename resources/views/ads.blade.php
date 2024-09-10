@@ -49,7 +49,7 @@
                                 <td class="">
                                     <div class="flex items-center my-2 ">
                                         @if ($category->image != "NA")
-                                        <img class="w-48 h-24 mb-2  ml-5 " src="{{ asset('ads/'.$category->image)}}" />
+                                        <img class="w-48 h-24 mb-2  ml-5 " src="{{ asset('images/ads/'.$category->image)}}" />
                                         @endif
                                     </div>
                                 </td>

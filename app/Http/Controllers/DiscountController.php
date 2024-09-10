@@ -48,7 +48,7 @@ class DiscountController extends Controller
         // Store the image in the public/ads directory
         $image = $request->file('image');
         $imageName = time() . '.' . $image->getClientOriginalExtension();
-        $image->move(public_path('ads'), $imageName);
+        $image->move(public_path('images/ads'), $imageName);
 
         // Create the ad in the database
         Ad::create([
@@ -68,7 +68,7 @@ class DiscountController extends Controller
 
         // Modify the image path to return full URL
         $ads = $ads->map(function($ad) {
-            $ad->image = url('ads/' . $ad->image);
+            $ad->image = url('images/ads/' . $ad->image);
             return $ad;
         });
 

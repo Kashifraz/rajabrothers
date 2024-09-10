@@ -24,6 +24,9 @@
                     <x-nav-link :href="route('products.index')" >
                     <i class="fas fa-receipt me-2"></i></i>{{ __('Orders') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('discounts.index')" >
+                    <i class="fas fa-receipt me-2"></i></i>{{ __('Ads') }}
+                    </x-nav-link>
                    
                 </div>
             </div>
