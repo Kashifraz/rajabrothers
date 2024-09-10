@@ -190,7 +190,7 @@ class ProductController extends Controller
             ], 404);
         }
     }
-    //cd
+
     //search product api implementation
     public function searchProductsByName(Request $request)
     {
@@ -222,6 +222,24 @@ class ProductController extends Controller
             'success' => true,
             'products' => $products,
             'has_more' => $hasMore,
+        ], 200);
+    }
+
+    public function getAds()
+    {
+        // Fetch all ads from the database
+        $ads = Ad::all();
+
+        // Modify the image path to return full URL
+        $ads = $ads->map(function($ad) {
+            $ad->image = url('ads/' . $ad->image);
+            return $ad;
+        });
+
+        // Return the ads as JSON
+        return response()->json([
+            'status' => 'success',
+            'ads' => $ads
         ], 200);
     }
 }

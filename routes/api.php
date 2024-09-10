@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\DiscountController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -28,3 +29,4 @@ Route::get('/category/{categoryId}/products', [ProductController::class, 'getPro
 Route::get('/products/search', [ProductController::class, 'searchProductsByName']);
 // Route::get('/products/barcode', [ProductController::class, 'getProductsByBarcodeId']);
 Route::get('product/barcode/{barcode_id}', [ProductController::class, 'getProductByBarcode']);
+Route::get('ads', [DiscountController::class, 'getAds']);
