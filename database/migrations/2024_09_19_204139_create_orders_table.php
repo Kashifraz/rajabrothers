@@ -19,6 +19,7 @@ return new class extends Migration
             $table->json('products'); 
             $table->decimal('total_amount', 10, 2); 
             $table->string('order_status');  //pending, dispatched and dilivered
+            $table->string('client_ip');
             $table->timestamps();
         });
     }

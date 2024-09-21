@@ -65,6 +65,7 @@ class OrderController extends Controller
             'products' => 'required|json', 
             'total_amount' => 'required|numeric',
             'order_status' => 'required|string', // E.g., 'paid', 'pending'
+            'client_ip' => 'required'
         ]);
 
         // Create and store the order
@@ -74,6 +75,7 @@ class OrderController extends Controller
             'products' => $validated['products'],
             'total_amount' => $validated['total_amount'],
             'order_status' => $validated['order_status'],
+            'client_ip' => $validated['client_ip']
         ]);
 
         // Return a response to the client
@@ -90,11 +92,6 @@ class OrderController extends Controller
 
         if ($orders->isEmpty()) {
             return response()->json(['message' => 'No orders found for this user'], 404);
-        }
-
-        foreach ($orders as $order) {
-            $productIds = json_decode($order->products, true); 
-            $order->products = Product::whereIn('id', $productIds)->get();
         }
 
         return response()->json($orders, 200);
