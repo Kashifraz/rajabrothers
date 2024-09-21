@@ -28,12 +28,18 @@ class OrderController extends Controller
 
         try {
             // Create the PaymentIntent
+
             $paymentIntent = PaymentIntent::create([
-                'amount' => $amount,
+                'amount' => $amount, 
                 'currency' => $currency,
-                'payment_method_types' => ['card'],
-                'payment_method' => $paymentToken,
-                'confirm' => true,
+                'payment_method_data' => [
+                    'type' => 'card',
+                    'card' => [
+                        'token' => $paymentToken, 
+                    ],
+                ],
+                'confirm' => true, 
+                'description' => 'Product Purchase',
             ]);
 
             return response()->json([
