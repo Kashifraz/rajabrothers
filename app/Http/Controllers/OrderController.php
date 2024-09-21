@@ -40,6 +40,10 @@ class OrderController extends Controller
                 ],
                 'confirm' => true, 
                 'description' => 'Product Purchase',
+                'automatic_payment_methods' => [
+                    'enabled' => true,
+                    'allow_redirects' => 'never', 
+                ],
             ]);
 
             return response()->json([
