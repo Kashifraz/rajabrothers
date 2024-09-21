@@ -18,17 +18,25 @@ class OrderController extends Controller
 
         // Retrieve payment amount from the request
         $amount = $request->input('amount') * 100; // amount in cents
+        $paymentToken = $request->input('token');
         $currency = 'gbp';
+
+        if (!$paymentToken) {
+            return response()->json(['error' => 'Payment token is required'], 400);
+        }
 
         try {
             // Create the PaymentIntent
             $paymentIntent = PaymentIntent::create([
                 'amount' => $amount,
                 'currency' => $currency,
-                'payment_method_types' => ['card'], 
+                'payment_method_types' => ['card'],
+                'payment_method' => $paymentToken,
+                'confirm' => true,
             ]);
 
             return response()->json([
+                'success' => true,
                 'clientSecret' => $paymentIntent->client_secret,
             ]);
         } catch (\Exception $e) {
