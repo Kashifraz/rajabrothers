@@ -32,3 +32,5 @@ Route::get('/products/search', [ProductController::class, 'searchProductsByName'
 Route::get('product/barcode/{barcode_id}', [ProductController::class, 'getProductByBarcode']);
 Route::get('ads', [DiscountController::class, 'getAds']);
 Route::post('/create/payment-intent', [OrderController::class, 'createPaymentIntent']);
+Route::post('/orders', [OrderController::class, 'store']);
+Route::get('/orders/{email}', [OrderController::class, 'getUserOrders']);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Stripe\Stripe;
 use Stripe\PaymentIntent;
@@ -44,59 +45,49 @@ class OrderController extends Controller
         }
     }
 
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+    // order storing into database API 
     public function store(Request $request)
     {
-        //
+        // Validate the request
+        $validated = $request->validate([
+            'name' => 'required|string', 
+            'email' => 'required', 
+            'products' => 'required|json', 
+            'total_amount' => 'required|numeric',
+            'order_status' => 'required|string', // E.g., 'paid', 'pending'
+        ]);
+
+        // Create and store the order
+        $order = Order::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'products' => $validated['products'],
+            'total_amount' => $validated['total_amount'],
+            'order_status' => $validated['order_status'],
+        ]);
+
+        // Return a response to the client
+        return response()->json([
+            'message' => 'Order successfully placed!',
+            'order' => $order,
+        ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Order $order)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Order $order)
+    public function getUserOrders($email)
     {
-        //
-    }
+        $orders = Order::where('email', $email)->get();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Order $order)
-    {
-        //
-    }
+        if ($orders->isEmpty()) {
+            return response()->json(['message' => 'No orders found for this user'], 404);
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Order $order)
-    {
-        //
+        foreach ($orders as $order) {
+            $productIds = json_decode($order->products, true); 
+            $order->products = Product::whereIn('id', $productIds)->get();
+        }
+
+        return response()->json($orders, 200);
     }
+   
 }
