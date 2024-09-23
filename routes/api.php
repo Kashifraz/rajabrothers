@@ -34,3 +34,4 @@ Route::get('ads', [DiscountController::class, 'getAds']);
 Route::post('/create/payment-intent', [OrderController::class, 'createPaymentIntent']);
 Route::post('/orders', [OrderController::class, 'store']);
 Route::get('/orders/{email}', [OrderController::class, 'getUserOrders']);
+Route::get('/products', [OrderController::class, 'getProducts']);

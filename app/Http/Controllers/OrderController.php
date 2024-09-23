@@ -75,7 +75,8 @@ class OrderController extends Controller
         // Validate the request
         $validated = $request->validate([
             'name' => 'required|string', 
-            'email' => 'required', 
+            'email' => 'required',
+            'location' => 'location', 
             'products' => 'required|json', 
             'total_amount' => 'required|numeric',
             'order_status' => 'required|string', // E.g., 'paid', 'pending'
@@ -86,6 +87,7 @@ class OrderController extends Controller
         $order = Order::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
+            'location'=> $validated['location'],
             'products' => $validated['products'],
             'total_amount' => $validated['total_amount'],
             'order_status' => $validated['order_status'],
@@ -109,6 +111,27 @@ class OrderController extends Controller
         }
 
         return response()->json($orders, 200);
+    }
+
+
+    public function getProducts(Request $request)
+    {
+        // Get the 'ids' parameter from the request, which can be a single ID or multiple IDs.
+        $ids = $request->input('ids');
+
+        if (is_array($ids)) {
+            // If multiple IDs are provided, return all products with those IDs.
+            $products = Product::whereIn('id', $ids)->get();
+        } else {
+            // If a single ID is provided, return the single product.
+            $products = Product::find($ids);
+        }
+
+        if (!$products) {
+            return response()->json(['error' => 'Product(s) not found'], 404);
+        }
+
+        return response()->json($products, 200);
     }
    
 }

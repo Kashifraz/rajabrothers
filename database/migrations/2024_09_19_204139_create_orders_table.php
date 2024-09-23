@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email');
+            $table->string('location');
             $table->json('products'); 
             $table->decimal('total_amount', 10, 2); 
             $table->string('order_status');  //pending, dispatched and dilivered
