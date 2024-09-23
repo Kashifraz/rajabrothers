@@ -76,7 +76,7 @@ class OrderController extends Controller
         $validated = $request->validate([
             'name' => 'required|string', 
             'email' => 'required',
-            'location' => 'location', 
+            'location' => 'required', 
             'products' => 'required|json', 
             'total_amount' => 'required|numeric',
             'order_status' => 'required|string', // E.g., 'paid', 'pending'
