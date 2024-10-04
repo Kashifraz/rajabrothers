@@ -21,10 +21,10 @@
                     <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.index')">
                     <i class="fas fa-shopping-bag me-2 "></i>{{ __('Products') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('products.index')" >
+                    <x-nav-link :href="route('orders.index')" :active="request()->routeIs('orders.index')" >
                     <i class="fas fa-receipt me-2"></i></i>{{ __('Orders') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('discounts.index')" >
+                    <x-nav-link :href="route('discounts.index')" :active="request()->routeIs('discounts.index')">
                     <i class="fas fa-receipt me-2"></i></i>{{ __('Ads') }}
                     </x-nav-link>
                    

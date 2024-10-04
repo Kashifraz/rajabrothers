@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DiscountController;
 use App\Models\Category;
@@ -44,6 +45,10 @@ Route::middleware('auth')->group(function () {
 
 Route::resource('categories', CategoryController::class);
 Route::resource('products', ProductController::class);
+Route::resource('orders', OrderController::class);
+Route::put('/orders/{id}/status', [OrderController::class, 'updateOrderStatus'])
+->name('updateOrderStatus');
+
 Route::resource('discounts', DiscountController::class);
 
 require __DIR__.'/auth.php';

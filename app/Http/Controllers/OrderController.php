@@ -12,6 +12,42 @@ use Stripe\Customer;
 class OrderController extends Controller
 {
 
+    public function index()
+    {
+        $orders = Order::query();
+        $stock = request('stock');
+        $search = request('search');
+        if (request('search')) {
+            $orders->where(function ($q) use ($search) {
+                $q->where('name', 'LIKE', '%' . $search . '%');
+            });
+        }
+
+      
+        return view('order', [
+            "orders" => $orders->paginate(4),
+            "stock" => $stock,
+            "search" => $search
+        ]);
+    }
+
+
+    public function updateOrderStatus(Request $request, $id)
+    {
+        // Validate input
+        $request->validate([
+            'order_status' => 'required|in:pending,in progress,completed',
+        ]);
+
+        // Find the order and update the status
+        $order = Order::findOrFail($id);
+        $order->order_status = $request->input('order_status');
+        $order->save();
+
+        return redirect()->back()->with('success', 'Order status updated successfully.');
+    }
+
+
     //Create stripe payment intent API
     public function createPaymentIntent(Request $request)
     {
@@ -70,7 +106,7 @@ class OrderController extends Controller
     }
 
     // order storing into database API 
-    public function store(Request $request)
+    public function store(Request $request) 
     {
         // Validate the request
         $validated = $request->validate([
