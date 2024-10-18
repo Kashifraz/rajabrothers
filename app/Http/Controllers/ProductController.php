@@ -52,7 +52,7 @@ class ProductController extends Controller
             'unit' => 'required',
             'quantity' => 'required',
             'price' => 'required',
-            'image' => 'required|image|mimes:png,jpg,jpeg|max:5000',
+            'image' => 'image|mimes:png,jpg,jpeg|max:5000',
         ]);
 
         $imageName = null;
@@ -68,6 +68,17 @@ class ProductController extends Controller
                 'quantity' => $request->quantity,
                 'price' => $request->price,
                 'image' => $imageName,
+            ]);
+        }else{
+            Product::create([
+                'barcode_id' => $request->id,
+                'name' => $request->name,
+                'category_id' => $request->category_id,
+                'description' => $request->description,
+                'unit' => $request->unit,
+                'quantity' => $request->quantity,
+                'price' => $request->price,
+                'image' => "placeholder.jpg",
             ]);
         }
 

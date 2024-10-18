@@ -93,7 +93,7 @@
                                 <td class="px-6 py-4">
                                     {{$order->order_status}}
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-4 inline-flex">
                                 <!-- Status Dropdown -->
                                 <form action="{{ route('updateOrderStatus', $order->id) }}" method="POST">
                                     @csrf
@@ -104,6 +104,7 @@
                                         <option value="completed" {{ $order->order_status == 'completed' ? 'selected' : '' }}>Completed</option>
                                     </select>
                                 </form>
+                                <a class="ml-5 mt-2 underline" href="#" onclick="detailsModal(true,  '{{ $order->id }}', '{{ $order->name }}', '{{ $order->email }}','{{ $order->location }}','{{ $order->total_amount }}','{{ $order->products }}','{{ $order->order_status }}')">Details</i></a> 
                                 </td>
 
                                
@@ -121,4 +122,78 @@
             </nav>
         </div>
     </div>
+
+     <!-- Show Order Details Modal  -->
+     <div class="py-12 bg-gray-700 hidden transition duration-150 ease-in-out  z-10 fixed top-0 right-0 bottom-0 left-0" id="details_modal">
+        <div role="alert" class="container mx-auto w-11/12 md:w-2/3 max-w-4xl max-h-2xl overflow-scroll scroll-smooth bg-white shadow-md rounded border border-gray-400">
+            <div class="relative py-8 px-5 md:px-10 ">
+                <h1 class="text-gray-800 font-lg text-2xl font-bold tracking-normal leading-tight mb-4">Order Details</h1>
+                
+                <!-- order-details.blade.php -->
+                <div class="">
+                    <p><strong>Order ID:</strong> <span class="ml-3 mb-2" id="order_id"></span> </p>
+                    <p><strong>Customer Name:</strong> <span class="ml-3 mb-2" id="name"></span></p>
+                    <p><strong>Email:</strong> <span class="ml-3 mb-2" id="email"></span></p>
+                    <p><strong>Location:</strong> <span class="ml-3 mb-2" id="location"></span></p>
+                    <p><strong>Total Amount:</strong><span class="ml-3 mb-2" id="amount"></span></p>
+
+                    <h3 class="text-md font-bold mt-4">Products Ordered</h3>
+                    
+                  
+                </div>
+
+                <button class="cursor-pointer absolute top-0 right-0 mt-4 mr-5 text-gray-400 hover:text-gray-600 transition duration-150 ease-in-out rounded focus:ring-2 focus:outline-none focus:ring-gray-600" onclick="detailsModal()" aria-label="close modal" role="button">
+                    <i class="fa-solid fa-circle-xmark text-2xl"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let details_modal = document.getElementById("details_modal");
+
+        function detailsModal(val, id, name, email, location, amount, products, status) {
+            $('#details_modal').removeClass('hidden');
+            if (val) {
+                fadeIn(details_modal);
+                console.log(id);
+                console.log(name);
+                console.log(email);
+                console.log(location);
+                document.getElementById('order_id').innerText = id;
+                document.getElementById('name').innerText = name;
+                document.getElementById('email').innerText = email;
+                document.getElementById('location').innerText = location;
+                document.getElementById('amount').innerText = amount;
+                document.getElementById('status').innerText = status;
+            } else {
+                fadeOut(details_modal);
+            }
+        }
+
+        function fadeOut(el) {
+            el.style.opacity = 0.6;
+            (function fade() {
+                if ((el.style.opacity -= 0.1) < 0) {
+                    el.style.display = "none";
+                    el.style.backgroundColor = ""; // Reset background color when fading out
+                } else {
+                    requestAnimationFrame(fade);
+                }
+            })();
+        }
+
+        function fadeIn(el, display) {
+            el.style.opacity = 0;
+            el.style.display = display || "flex";
+            el.style.backgroundColor = "rgba(0, 0, 0, 0.5)"; // Partially transparent background
+            (function fade() {
+                let val = parseFloat(el.style.opacity);
+                if (!((val += 0.2) > 1)) {
+                    el.style.opacity = val;
+                    requestAnimationFrame(fade);
+                }
+            })();
+        }
+    </script>
 </x-app-layout>

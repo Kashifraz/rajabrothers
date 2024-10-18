@@ -131,8 +131,8 @@
 
     <!-- Add Product model  -->
     <div class="py-12 bg-gray-700 hidden transition duration-150 ease-in-out  z-10 fixed top-0 right-0 bottom-0 left-0" id="category_modal">
-        <div role="alert" class="container mx-auto w-11/12 md:w-2/3 max-w-4xl max-h-2xl overflow-scroll scroll-smooth">
-            <div class="relative py-8 px-5 md:px-10 bg-white shadow-md rounded border border-gray-400">
+        <div role="alert" class="container mx-auto w-11/12 md:w-2/3 max-w-4xl max-h-2xl overflow-scroll scroll-smooth bg-white shadow-md rounded border border-gray-400">
+            <div class="relative py-8 px-5 md:px-10 ">
                 <h1 class="text-gray-800 font-lg text-2xl font-bold tracking-normal leading-tight mb-4">Add Product</h1>
                 <form method="post" action="{{route('products.store')}}" class="mt-6 space-y-6" enctype="multipart/form-data">
                     @csrf
