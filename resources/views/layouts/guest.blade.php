@@ -21,7 +21,7 @@
 
             <div class="relative z-10">
                 <a href="/">
-                    <x-application-logo class="w-50 h-50 fill-current text-gray-500" />
+                    <img class="w-40 h-28 mb-2  ml-5 " src="{{ asset('images/logo-rbbl.png')}}">
                 </a>
             </div>
 

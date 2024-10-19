@@ -112,6 +112,7 @@ class OrderController extends Controller
         $validated = $request->validate([
             'name' => 'required|string', 
             'email' => 'required',
+            'phone' => 'required',
             'location' => 'required', 
             'products' => 'required|json', 
             'total_amount' => 'required|numeric',
@@ -123,6 +124,7 @@ class OrderController extends Controller
         $order = Order::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
+            'phone' => $validated['phone'],
             'location'=> $validated['location'],
             'products' => $validated['products'],
             'total_amount' => $validated['total_amount'],
