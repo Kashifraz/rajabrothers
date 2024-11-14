@@ -1,3 +1,6 @@
+<?php 
+use App\Models\Product;
+?>
 <x-app-layout>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -104,7 +107,10 @@
                                         <option value="completed" {{ $order->order_status == 'completed' ? 'selected' : '' }}>Completed</option>
                                     </select>
                                 </form>
-                                <a class="ml-5 mt-2 underline" href="#" onclick="detailsModal(true,  '{{ $order->id }}', '{{ $order->name }}', '{{ $order->email }}','{{ $order->location }}','{{ $order->total_amount }}','{{ $order->products }}','{{ $order->order_status }}')">Details</i></a> 
+                                <?php 
+                                $products = Product::whereIn('id', json_decode($order->products))->get();
+                                ?>
+                                <a class="ml-5 mt-2 underline" href="#" onclick="detailsModal(true,  '{{ $order->id }}', '{{ $order->name }}', '{{ $order->email }}', '{{ $order->phone }}' ,'{{ $order->location }}','{{ $order->total_amount }}','{{ $products }}','{{ $order->order_status }}')">Details</i></a> 
                                 </td>
 
                                
@@ -134,6 +140,7 @@
                     <p><strong>Order ID:</strong> <span class="ml-3 mb-2" id="order_id"></span> </p>
                     <p><strong>Customer Name:</strong> <span class="ml-3 mb-2" id="name"></span></p>
                     <p><strong>Email:</strong> <span class="ml-3 mb-2" id="email"></span></p>
+                    <p><strong>Phone:</strong> <span class="ml-3 mb-2" id="phone"></span></p>
                     <p><strong>Location:</strong> <span class="ml-3 mb-2" id="location"></span></p>
                     <p><strong>Total Amount:</strong><span class="ml-3 mb-2" id="amount"></span></p>
 
@@ -152,7 +159,7 @@
     <script>
         let details_modal = document.getElementById("details_modal");
 
-        function detailsModal(val, id, name, email, location, amount, products, status) {
+        function detailsModal(val, id, name, email, phone, location, amount, products, status) {
             $('#details_modal').removeClass('hidden');
             if (val) {
                 fadeIn(details_modal);
@@ -160,9 +167,11 @@
                 console.log(name);
                 console.log(email);
                 console.log(location);
+                console.log(products);
                 document.getElementById('order_id').innerText = id;
                 document.getElementById('name').innerText = name;
                 document.getElementById('email').innerText = email;
+                document.getElementById('phone').innerText = phone;
                 document.getElementById('location').innerText = location;
                 document.getElementById('amount').innerText = amount;
                 document.getElementById('status').innerText = status;

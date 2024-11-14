@@ -105,6 +105,37 @@ class OrderController extends Controller
         }
     }
 
+
+    //payment intent API - second simple API
+    public function createPaymentIntentAmount(Request $request)
+    {
+        $amount = $request->input('amount') * 100; // amount in cents
+        $currency = 'gbp';
+
+        // Set your Stripe secret key
+        Stripe::setApiKey(env('STRIPE_SECRET'));
+
+        try {
+            $paymentIntent = PaymentIntent::create([
+                'payment_method_types' => ['card'],
+                'amount' => $amount,
+                'currency' => $currency  
+            ]);
+
+            // Return the client secret, which will be used on the frontend
+            return response()->json([
+                'clientSecret' => $paymentIntent->client_secret,
+            ], 200);
+
+        } catch (ApiErrorException $e) {
+            // Handle Stripe API error
+            return response()->json([
+                'error' => $e->getMessage(),
+            ], 400);
+        }
+    }
+
+
     // order storing into database API 
     public function store(Request $request) 
     {

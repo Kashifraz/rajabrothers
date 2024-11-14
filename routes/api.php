@@ -35,3 +35,4 @@ Route::post('/create/payment-intent', [OrderController::class, 'createPaymentInt
 Route::post('/orders', [OrderController::class, 'store']);
 Route::get('/orders/{email}', [OrderController::class, 'getUserOrders']);
 Route::get('/products', [OrderController::class, 'getProducts']);
+Route::post('/create/payment-intent-amount', [OrderController::class, 'createPaymentIntentAmount']);
